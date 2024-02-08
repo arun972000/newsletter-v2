@@ -3,29 +3,29 @@
 
 import { useEffect, useState } from 'react';
 import PDFCard from './PDFCard'
-import Value from './PDFContent'
 import "./scrollbar.css";
 import axios from 'axios';
 import { Url } from '../../url';
+import PdfContent from './PDFContent';
 
 const PDFPage = () => {
 
-    const[data,setData]=useState([])
-    
+    const [data, setData] = useState([])
+
     const scrollContainerStyle = { width: "800px", maxHeight: "700px" };
 
-    const apiCall=async()=>{
-        try{
-            const res=await axios.get(Url)
+    const apiCall = async () => {
+        try {
+            const res = await axios.get(Url)
             setData(res.data)
-        }catch(err){
+        } catch (err) {
             console.log(err)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         apiCall()
-    },[])
+    }, [])
 
     const letterCard = data.map(item => (<PDFCard key={item.id} item={item} />))
     return (
@@ -35,11 +35,12 @@ const PDFPage = () => {
                     <div className="col-md-2">
                     </div>
                     <div className="col-md-8">
-                        <Value />
+                        <PdfContent />
                     </div>
                     <div className="col-md-2">
-                        <div className="row justify-content-center">
-                            <div className="scrollbar scrollbar-primary  mt-5 mx-auto" style={scrollContainerStyle}>
+
+                        <div className="scrollbar scrollbar-primary  mt-5 mx-auto " style={scrollContainerStyle}>
+                            <div className="row justify-content-center">
                                 {letterCard}
                             </div>
                         </div>

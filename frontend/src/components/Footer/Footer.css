@@ -1,0 +1,18 @@
+.footer p{
+    font-size: smaller;
+}
+.footer{
+    background-color: #1d1e20;
+    color: white;
+}
+
+.social__icons {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  /* Adjust styles as needed */
+  .social-icons i {
+    margin-right: 10px; /* Add spacing between icons */
+    font-size: 24px; /* Adjust the icon size */
+  }

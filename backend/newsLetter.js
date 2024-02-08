@@ -33,12 +33,12 @@ newsRoutes.get('/', async (req, res) => {
 });
 
 
-newsRoutes.get('/data/:id', async (req, res) => {
+newsRoutes.get('/data/:title', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { title } = req.params;
 
 
-        const [rows] = await db.execute('SELECT * FROM newsletter WHERE id = ?', [id]);
+        const [rows] = await db.execute('SELECT * FROM newsletter WHERE title = ?', [title]);
 
         if (rows.length > 0) {
             res.json(rows[0]);
@@ -65,9 +65,9 @@ newsRoutes.post("/upload", multipleUploads, async (req, res) => {
 
         const modified_date=null;
 
-    
+
        
-        const [results] = await db.execute('INSERT INTO newsletter (title, image_url, created_date, modified_date, created_by, modified_by, pdf_url, keywords) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [
+        const [results] = await db.execute('INSERT INTO newsletter (title, image_url, created_date, modified_date, created_by, modified_by, pdf_url) VALUES (?, ?, ?, ?, ?, ?, ?)', [
             payload.title,
             image_url[0].filename,
             created_date,
@@ -75,7 +75,6 @@ newsRoutes.post("/upload", multipleUploads, async (req, res) => {
             createdBy,
             modifiedBy,
            pdf_url[0].filename,
-            payload.keywords
         ]);
         res.json({ message: 'Form submitted successfully', formId: results });
     } catch (error) {
@@ -91,17 +90,16 @@ newsRoutes.put('/update/:id',multipleUploads, async (req, res) => {
         const { id } = req.params;
         const { image_url, pdf_url } = req.files;
         const newData = req.body;
-console.log(req.files)
+
         newData.modified_date = Date.now();
 
         const [results] = await db.execute(`UPDATE newsletter
-            SET title = ?, image_url = ?, modified_date = ?, pdf_url = ?, keywords = ?
+            SET title = ?, image_url = ?, modified_date = ?, pdf_url = ? 
             WHERE id = ?`, [
                 newData.title,
                 image_url[0].filename,
                 newData.modified_date,
                 pdf_url[0].filename,
-                newData.keywords,
                 id
             ]);
 
@@ -122,8 +120,8 @@ newsRoutes.delete("/delete/:id", async (req, res) => {
     try {
         const { id } = req.params
         const [rows] = await db.execute('SELECT pdf_url FROM newsletter WHERE id = ?', [id]);
-        const pdfPath = `myUploads/${rows[0].pdf_url}`
-        const imagePath = `myUploads/${rows[0].image_url}`
+        const pdfPath = `public/myUploads/${rows[0].pdf_url}`
+        const imagePath = `public/myUploads/${rows[0].image_url}`
         await db.execute(`DELETE FROM newsletter WHERE id = ${id}`)
         fs.unlink(pdfPath, (err) => {
             if (err) {

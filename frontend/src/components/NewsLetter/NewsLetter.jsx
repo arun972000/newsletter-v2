@@ -1,5 +1,5 @@
 
-import YearSelectorComponent from "./Tabs"
+// import YearSelectorComponent from "./Tabs"
 import "./NewsLetter.css"
 import { useEffect, useState } from "react"
 import { Url } from "../../url.js"
@@ -25,10 +25,10 @@ const NewsLetter = () => {
     console.log(data )
     return (
         <>
-            <div className="NewsLetter__bg">
+            <div className="NewsLetter__bg pt-5">
                 <div className="container">
-                    <YearSelectorComponent />
-                    <div className="row">
+                    {/* <YearSelectorComponent /> */}
+                    <div className="row justify-content-center">
                         {Letters}
                     </div>
                 </div>
